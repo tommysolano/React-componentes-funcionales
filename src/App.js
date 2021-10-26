@@ -10,10 +10,12 @@ import React, { useState} from 'react';
 
 
 const useContador = (initial) => {
-  const [contador, setContador] = useState(0)
+  const [contador, setContador] = useState(initial)
   const incrementar = () => {
     setContador( contador + 1 )
   }
+
+  return [contador, incrementar]
 }
 
 const App = () => {

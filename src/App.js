@@ -8,13 +8,21 @@ import React, { useState} from 'react';
 //custom hooks
 //cuando creemos un custom hooks siempre debe de comensar cn use...
 
+
+const useContador = (initial) => {
+  const [contador, setContador] = useState(0)
+  const incrementar = () => {
+    setContador( contador + 1 )
+  }
+}
+
 const App = () => {
-  const [contador, setContador] = useState(0);
+  const [contador, incrementar] = useContador(0);
 
   return (
     <div>
       Contador: {contador}
-      <button onClick={() => setContador(contador + 1 )}>Incrementar</button>
+      <button onClick={incrementar}>Incrementar</button>
     </div>
   )
 }

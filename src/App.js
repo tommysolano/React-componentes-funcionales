@@ -1,54 +1,35 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useReducer} from 'react';
 
-//Reglas de los Hooks:
-//no se llaman en loops, ni condiciones, ni while ni nada
-//siempre son en el nivel mas alto del componente
-//solo se llaman en 2 partes:
-//componentes de react
-//custom hooks
-//cuando creemos un custom hooks siempre debe de comensar cn use...
+//const state = {contador:0}
+//action = {type: string, payload: any}
 
+const inicial = {contador: 0}
 
-const useContador = (initial) => {
-  const [contador, setContador] = useState(initial)
-  const incrementar = () => {
-    setContador( contador + 1 )
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "incrementar":
+      return {contador: state.contador + 1}
+    case "decrementar":
+      return {contador: state.contador - 1}
+    case "set":
+      return {contador: action.payload}
+    default:
+      break;
   }
-
-  return [contador, incrementar]
 }
-
-
-const Interval = ({contador}) => {
-  useEffect(() => {
-    const i = setInterval(() => console.log(contador), 1000)
-    return () => clearInterval(i)
-  }, [contador])
-  return (
-    <p>Intervalo</p>
-  )
-}
-
 
 const App = () => {
-  const [contador, incrementar] = useContador(0);
-
-  useEffect(() => {
-    document.title = contador
-  }, [contador])
-
-  //useEffect se ejecuta siempre que el DOM cambie a no ser que tenga el arreglo vacio []
-  //cuando esta el arreglo vacio useEffect solo se ejecuta una vez que es cuando carga el componente
-  //si ponemos un argumento dentro del arreglo [contador] useEffect se ejecutara cada vez que este argumento cambia
-
+  const [state, dispatch] = useReducer(reducer, inicial)
+  const [valor, setValor] = useState(0)
   return (
     <div>
-      Contador: {contador}
-      <button onClick={incrementar}>Incrementar</button>
-      <Interval contador={contador}/>
+      Contador: {state.contador}
+      <input value={valor} onChange={e => setValor(e.target.value)}/>
+      <button onClick={() => dispatch({ type: "incrementar"})}>Más</button>
+      <button onClick={() => dispatch({ type: "decrementar"})}>Menos</button>
+      <button onClick={() => dispatch({ type: "set", payload: valor})}>Set</button>
     </div>
   )
 }
-
 
 export default App

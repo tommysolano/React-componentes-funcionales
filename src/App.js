@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 
 //Reglas de los Hooks:
 //no se llaman en loops, ni condiciones, ni while ni nada
@@ -20,6 +20,14 @@ const useContador = (initial) => {
 
 const App = () => {
   const [contador, incrementar] = useContador(0);
+
+  useEffect(() => {
+    document.title = contador
+  }, [contador])
+
+  //useEffect se ejecuta siempre que el DOM cambie a no ser que tenga el arreglo vacio []
+  //cuando esta el arreglo vacio useEffect solo se ejecuta una vez que es cuando carga el componente
+  //si ponemos un argumento dentro del arreglo [contador] useEffect se ejecutara cada vez que este argumento cambia
 
   return (
     <div>
